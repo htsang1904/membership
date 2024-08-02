@@ -7,12 +7,17 @@ export default new Router({
         {
             path: '/',
             name: 'HomePage',
-            component: () => import('@/components/HomePage.vue'),
+            component: () => import('@/pages/HomePage.vue'),
         },
         {
             path: '/member-benefits',
             name: 'memberBenefitsPage',
-            component: () => import('@/components/MemberBenefitsPage.vue'),
+            component: () => import('@/pages/MemberBenefitsPage.vue'),
+        },
+        {
+            path: '/wallet',
+            name: 'memberWalletPage',
+            component: () => import('@/pages/MemberWalletPage.vue'),
         },
     ]
 })

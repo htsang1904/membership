@@ -4,13 +4,18 @@
       <div class="member-info">
         <div class="member-name">Huỳnh Thanh Sang</div>
         <div class="member-rank">
-          <div>
+          <div :style="{backgroundColor: progressColor(3)}">
             Hạng thành viên
           </div>
           <span>
             Chi tiết tiến độ
             <i class="fas fa-chevron-right"></i>
           </span>
+        </div>
+        <div class="custom-progress">
+          <el-progress :percentage="percentage" :show-text="false" :color="progressColor(3)">
+          </el-progress>
+          <i class="far fa-check-circle" :style="{color: percentage===100 ? progressColor(3):''}"></i>
         </div>
         <marquee class="member-slider">
           Đã giữ hạng thành công! Sử dụng thêm <span>789.000đ</span> trước ngày <span>01/08</span> để thăng hạng.
@@ -20,7 +25,7 @@
           +30 xu - Điểm danh
         </button> -->
       </div>
-      <div class="member-card">
+      <div class="member-card" :style="{backgroundColor: progressColor(3)}">
         <span>Từ 30/03</span>
       </div>
     </div>
@@ -30,7 +35,7 @@
         <div class="crossbar"></div>
         <div class="content" ref="scrollContent">
           <div class="wallet">
-            <div class="wallet-coins">
+            <div class="wallet-coins"  @click="goToWalletPage">
               <div class="amount">
                 <img src="../assets/img/coin.png" alt="">
                 <span>10000</span>
@@ -41,7 +46,7 @@
                 <i class="fas fa-caret-right"></i>
               </div>
             </div>
-            <div class="wallet-benefits">
+            <div class="wallet-benefits" @click="goToBenefitPage">
               <div class="amount">
                 <span>10</span>
                 <div>đặc quyền</div>
@@ -106,13 +111,21 @@ export default {
     return {
       scrolledUp: false,
       startY: 0,
-      endY: 0
+      endY: 0,
+      spendingMoney: 1900,
+      totalMoneyNextLevel: 2000
+    }
+  },
+  computed: {
+    percentage() {
+      return this.spendingMoney*100/this.totalMoneyNextLevel
     }
   },
   methods: {
     handleTouchStart(event) {
       this.startY = event.touches[0].clientY;
     },
+
     handleTouchEnd(event) {
       this.endY = event.changedTouches[0].clientY;
       const scrollContent = this.$refs.scrollContent;
@@ -124,6 +137,29 @@ export default {
         this.scrolledUp = false;
         this.$refs.scrollContent.style.overflowY = 'hidden'
       }
+    },
+
+    goToWalletPage() {
+      this.$router.push({path: '/wallet'})
+    },
+
+    goToBenefitPage() {
+      this.$router.push({path: '/member-benefits'})
+    },
+
+    progressColor(rank) {
+      switch (rank) {
+        case 2:
+          return '#c0c0c0'
+        case 3:
+          return '#ffcc4f'
+        case 4:
+          return '#00CDCD'
+        case 1:
+          return '#1eac12'
+        default:
+          return '#1eac12'
+      }
     }
   },
 }
@@ -133,7 +169,7 @@ export default {
   max-width: 470px;
   width: 100%;
   height: 100vh;
-  background-color:#053e94;
+  background: radial-gradient(circle, #0057cf 0%, #003e93 65%);
   display: flex;
   flex-direction: column;
   .header {
@@ -173,6 +209,18 @@ export default {
           .fa-chevron-right {
             margin-left: 4px;
           }
+        }
+      }
+      .custom-progress {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        .el-progress {
+          width: 100%;
+        }
+        .fa-check-circle {
+          margin-left: 4px;
         }
       }
       .member-slider {
@@ -287,6 +335,7 @@ export default {
             justify-content: space-between;
             padding-left: 10px;
             font-weight: 600;
+            cursor: pointer;
           }
           .wallet-benefits {
             border-left: 1px solid rgb(25, 25, 25);
@@ -390,7 +439,7 @@ export default {
       }
     }
     .scrolled-up {
-      height: 110%;
+      height: 109%;
     }
   }
 }

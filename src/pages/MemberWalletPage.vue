@@ -1,6 +1,6 @@
 <template>
     <div>
-        aaaa
+        wallet
     </div>
   </template>
   
